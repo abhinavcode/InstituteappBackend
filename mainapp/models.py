@@ -1,19 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 # Create your models here.
 
 class Student(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	roll = models.IntegerField(primary_key=True)
 	name = models.CharField(max_length=100,blank=True)
-	department = models.CharField(max_length=100)
+	department = models.CharField(max_length=100,blank=True)
+	course = models.CharField(max_length=100,blank=True)
+	gaurdians_name = models.CharField(max_length=100,blank=True)
+	blood_type = models.CharField(max_length=100,blank=True)
+	gender = models.CharField(max_length=100,blank=True)
 	phone = models.CharField(max_length=10,blank=True)
 	email = models.CharField(max_length=100,blank=True)
 	year = models.CharField(max_length=100,blank=True)
-	fcmtoken = models.CharField(max_length=500, blank=True)
+	address = models.CharField(max_length=00,blank=True)
+	#fcmtoken = models.CharField(max_length=500, blank=True)
+	#img = models.ImageField(upload_to='student_images/')
 	reg_time = models.DateTimeField(auto_now=True)
 	def __str__(self):
-		return self.name 
+		return self.name
 
 
 class Complain(models.Model):
@@ -24,7 +31,7 @@ class Complain(models.Model):
 	complainsubtype=models.TextField(blank=True, null=True)
 	def __str__(self):
 		if self.complainby:
-			return "complain by " + self.complainby.name 
+			return "complain by " + self.complainby.name
 		return "complain by anonymous"
 
 class CouncilandCell(models.Model):
@@ -58,4 +65,3 @@ class Notification(models.Model):
 
 	def __str__(self):
 		return self.notification_header
-
