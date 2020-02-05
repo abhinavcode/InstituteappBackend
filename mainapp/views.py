@@ -5,6 +5,31 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from .auth import Auth
+from .sender import send_email
+import httplib2
+from apiclient import discovery
+import time
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+
+gmail_auth = Auth('https://mail.google.com/',f'file/path','Gmail API Python Quickstart')
+gmail_cred = gmail_auth.get_credentials()
+gmail_http = gmail_cred.authorize(httplib2.Http())
+gmail_service = discovery.build('gmail', 'v1', http=gmail_http)
+
+time.sleep(5)
+
+gauth = GoogleAuth()
+gauth.LocalWebserverAuth()
+
+gmail = send_email(gmail_service)
+
+def img_access(request):
+    if request.method == 'POST':
+        post = json.loads(request.body)
+        email = post["email"]
+
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
@@ -16,7 +41,7 @@ def checkregister(request):
 
     response = {}
     response["status"]=0
-    
+
     if request.method == 'POST':
         post = json.loads(request.body)#request.POST
         email = post["email"]
@@ -31,7 +56,7 @@ def checkregister(request):
 
         except:
             response["status"] = 2 #not registered
-    return JsonResponse(response) 
+    return JsonResponse(response)
 
 
 @csrf_exempt
@@ -124,7 +149,7 @@ def feedandclubs(request):
 	            return JsonResponse(response)
 
 	        else:
-	            return JsonResponse(response) 
+	            return JsonResponse(response)
 
 	except:
 		return JsonResponse(response)
@@ -149,6 +174,8 @@ def postcomplain(request):
                 if "hostel" in post:
                     complainsubtype=post["hostel"]
                     complain.complainsubtype=complainsubtype
+                   # message = sendInst.create_message_with_attachment('senderemail','reciving','Testing 123','Hi there, This is a test from Python!', 'image.jpg' )
+                    sendInst.send_message('me',message)
                 complain.complaintype = complaintype
                 complain.save()
 
@@ -167,7 +194,7 @@ def postcomplain(request):
             return JsonResponse(response)
 
         else:
-            return JsonResponse(response) 
+            return JsonResponse(response)
 
     return JsonResponse(response)
 
@@ -189,7 +216,7 @@ def interested(request):
                     response["status"]=1
                 else:
                     response["status"]=2
-                                
+
                 return JsonResponse(response)
 
     return JsonResponse(response)
@@ -212,6 +239,7 @@ def clubsandcouncils():
 		    cou={}
 		    cou["name"]=c.councilname.name
 		    if c.councilname.image:
+
 		        cou["image"]=c.councilname.image.url
 		    cou["clubs"]=[]
 		    cou["clubs"].append(club)
