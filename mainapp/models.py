@@ -65,7 +65,7 @@ class Notification(models.Model):
 	interested = models.ManyToManyField(Student,editable=False,related_name='interested')
 	
 	class Meta:
-		ordering = ['datetime']
+		ordering = ['-datetime']
 
 	def __str__(self):
 		return self.notification_header
