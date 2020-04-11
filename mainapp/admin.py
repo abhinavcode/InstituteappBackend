@@ -22,6 +22,8 @@ class UserAdmin(BaseUserAdmin):
 # class StudentAdmin(admin.ModelAdmin):
 # 	inlines = (ImageInline,)
 
+admin.site.site_header = "IIT BHU Institute App"
+
 # Register your models here.
 admin.site.register(Complain)
 admin.site.register(CouncilandCell)
