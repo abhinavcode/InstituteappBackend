@@ -40,8 +40,8 @@ class CouncilandCell(models.Model):
 
 class Club(models.Model):
 	councilname = models.ForeignKey(CouncilandCell, on_delete = models.CASCADE)
-	name = models.CharField(max_length=100, blank=True)
-	clubimage = models.ImageField(null=True,blank=True)
+	name = models.CharField(max_length=100, blank=False)
+	clubimage = models.ImageField(null=True,blank=False)
 	def __str__(self):
 		return self.name
 
