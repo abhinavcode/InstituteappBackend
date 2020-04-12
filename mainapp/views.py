@@ -55,7 +55,7 @@ def login(request):
         try:
             dig = hashlib.sha256()
             student = Student.objects.get(email__iexact=email)
-            dig.update((student.password+'8080).encode('ascii'))
+            dig.update((student.password+'8080').encode('ascii'))
             if dig.hexdigest() != post['password']:
                 raise Exception
             student.roll = post['roll']
