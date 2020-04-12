@@ -27,7 +27,11 @@ def checkregister(request):
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
+            dig = hashlib.sha256()
             student = Student.objects.get(email__iexact=email)
+            dig.update((student.password+'8080').encode('ascii'))
+            if dig.hexdigest() != post['password']:
+                raise Exception
             response['name'] = student.name
             response['roll'] = student.roll
             response['phone'] = student.phone
@@ -163,8 +167,15 @@ def postcomplain(request):
     if request.method == 'POST':
         print (request.body)
         post = json.loads(request.body)  # request.POST
-        roll = int(post['roll'])
-        student = Student.objects.get(roll=roll)
+        try:
+            dig = hashlib.sha256()
+            student = Student.objects.get(email__iexact=email)
+            dig.update((student.password+'8080').encode('ascii'))
+            if dig.hexdigest() != post['password']:
+                raise Exception
+        except:
+            return JsonResponse(response)
+            
         if student:
             complainheader = post['header']
             complaintype = post['type']
@@ -254,6 +265,10 @@ def timetable(request):
         email = post['email']
         try:
              student = Student.objects.get(email__iexact=email)
+             dig = hashlib.sha256()
+             dig.update((student.password+'8080').encode('ascii'))
+             if dig.hexdigest() != post['password']:
+                raise Exception
              dept = student.department
              timetable = TimeTable.objects.get(department = dept)
              response['image'] = timetable.tableimage.url
