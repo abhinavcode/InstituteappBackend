@@ -8,7 +8,7 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-
+import hashlib
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
@@ -53,7 +53,11 @@ def login(request):
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
+            dig = hashlib.sha256()
             student = Student.objects.get(email__iexact=email)
+            dig.update((student.password+'8080').encode('ascii'))
+            if dig.hexdigest() != post['password']:
+                raise Exception
             student.roll = post['roll']
             student.name = post['name']
             student.phone = post['phone']

@@ -11,6 +11,7 @@ class Student(models.Model):
 	course = models.CharField(max_length=100,blank=True)
 	fatherName = models.CharField(max_length=100,blank=True)
 	address = models.CharField(max_length=1000,blank=True)
+	password = models.CharField(max_length=100,blank=True)
 	gender = models.CharField(max_length=10,blank=True)
 	bloodGroup = models.CharField(max_length=3,blank=True)
 	fcmtoken = models.CharField(max_length=500, blank=True)
@@ -64,7 +65,7 @@ class Notification(models.Model):
 	interested = models.ManyToManyField(Student,editable=False,related_name='interested')
 	
 	class Meta:
-		ordering = ['datetime']
+		ordering = ['-datetime']
 
 	def __str__(self):
 		return self.notification_header
