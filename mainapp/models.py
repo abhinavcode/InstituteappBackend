@@ -40,8 +40,8 @@ class CouncilandCell(models.Model):
 		return self.name
 	
 class POR(models.Model):
-	student = models.ForeignKey(Student, on_delete=models.CASCADE,null=True,editable=False)
-	councilname = models.ForeignKey(CouncilandCell, on_delete = models.CASCADE)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	councilname = models.OneToOnField(CouncilandCell, on_delete = models.CASCADE)
 	postion = models.CharField(max_length=100, blank=False)
 	def __str__(self):
 		return self.student.name
