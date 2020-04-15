@@ -8,6 +8,7 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from base64 import *
 import hashlib
 
 def randomString(stringLength=10):
@@ -293,3 +294,23 @@ def importantcontacts(request):
             } for contact in contacts ]
         response['status'] = 1
     return JsonResponse(response) 
+
+def notification(request):
+    response = {}
+    response['status'] = 0
+    if request.method == 'POST':
+        post = json.loads(request.body)
+        try:
+           user = User.objects.get(email__iexact=post['email'])
+           if user.check_password(post['password']):
+                por = POR.objects.get(user=user)
+                notif = Notification.objects.create(Club = por.club)
+                notif.notification_header = post['header']
+                notif.notification = post['notification']
+                notif.notification_pic = File(b64decode(post['image']))
+                notif.save()
+        except:
+            return JsonResponse(response)
+        response['status'] = 1
+    return JsonResponse(response)
+    
