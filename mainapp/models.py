@@ -44,7 +44,7 @@ class POR(models.Model):
 	councilname = models.OneToOneField(CouncilandCell, on_delete = models.CASCADE)
 	postion = models.CharField(max_length=100, blank=False)
 	def __str__(self):
-		return self.student.name
+		return self.user.username
 	
 	
 class Club(models.Model):
