@@ -9,7 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 from base64 import *
+from django.utils import timezone
 import hashlib
+import datetime
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
@@ -295,21 +297,30 @@ def importantcontacts(request):
         response['status'] = 1
     return JsonResponse(response) 
 
+@csrf_exempt
 def notification(request):
     response = {}
     response['status'] = 0
     if request.method == 'POST':
         post = json.loads(request.body)
+        print(post)
         try:
            user = User.objects.get(email__iexact=post['email'])
            if user.check_password(post['password']):
                 por = POR.objects.get(user=user)
-                notif = Notification.objects.create(Club = por.club)
+                club =  Club.objects.get(name = post['club'],councilname=por.councilname)
+                notif = Notification.objects.create(clubname = club)
+                notif.datetime = datetime.datetime(post['year'],post['month'],post['day'],post['hour'],post['minutes'],0,0,tzinfo = timezone.utc)
                 notif.notification_header = post['header']
-                notif.notification = post['notification']
-                notif.notification_pic = File(b64decode(post['image']))
+                notif.notification = post['description'] 
+                #notif.notification_pic = File(b64decode(post['image']))
                 notif.save()
-        except:
+           else:
+                response['status']=3
+                return JsonResponse(response)
+                
+        except Exception as e:
+            print("error:",e)
             return JsonResponse(response)
         response['status'] = 1
     return JsonResponse(response)
