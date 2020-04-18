@@ -31,11 +31,10 @@ def checkregister(request):
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
-            dig = hashlib.sha256()
-            student = Student.objects.get(email__iexact=email)
-            dig.update((student.password+'8080').encode('ascii'))
-            if dig.hexdigest() != post['password']:
-                raise Exception
+            user = User.objects.get(email__iexact=email)
+            if not user.check_password(post['password']):
+                    raise Exception
+            student= Student.objects.get(user=user)
             response['name'] = student.name
             response['roll'] = student.roll
             response['phone'] = student.phone
@@ -61,11 +60,10 @@ def login(request):
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
-            dig = hashlib.sha256()
-            student = Student.objects.get(email__iexact=email)
-            dig.update((student.password+'8080').encode('ascii'))
-            if dig.hexdigest() != post['password']:
-                raise Exception
+            user = User.objects.get(email__iexact=email)
+            if not user.check_password(post['password']):
+                    raise Exception
+            student= Student.objects.get(user=user)
             student.roll = post['roll']
             student.name = post['name']
             student.phone = post['phone']
@@ -105,6 +103,9 @@ def feedandclubs(request):
             post = json.loads(request.body)  # request.POST
             email = post['email']
             user = User.objects.get(email__iexact=email)
+            if not user.check_password(post['password']):
+                    raise Exception
+            student= Student.objects.get(user=user)
             notifs = Notification.objects.all()
 
             # print(notifs.viewedby_set.all())
@@ -143,6 +144,11 @@ def feedandclubs(request):
                     curr['map_location'] = notif.map_location
                     curr['viewedcount'] = notif.viewedby.count()
                     curr['interestedcount'] = notif.interested.count()
+                    if notif.intrested.count() <5:
+                        curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:notif.interested.count()]]
+                    else:
+                        curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:5]]
+                    
                     if student in notif.interested.all():
                         curr['interested'] = 1
                     else:
@@ -172,14 +178,13 @@ def postcomplain(request):
         print (request.body)
         post = json.loads(request.body)  # request.POST
         try:
-            dig = hashlib.sha256()
-            student = Student.objects.get(email__iexact=email)
-            dig.update((student.password+'8080').encode('ascii'))
-            if dig.hexdigest() != post['password']:
-                raise Exception
+            user = User.objects.get(email__iexact=email)
+            if not user.check_password(post['password']):
+                    raise Exception
+            student= Student.objects.get(user=user)
         except:
             return JsonResponse(response)
-            
+        student= Student.objects.get(user=user)    
         if student:
             complainheader = post['header']
             complaintype = post['type']
