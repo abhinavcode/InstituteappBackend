@@ -12,6 +12,7 @@ from base64 import *
 from django.utils import timezone
 import hashlib
 import datetime
+import random 
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
@@ -103,12 +104,12 @@ def feedandclubs(request):
         if request.method == 'POST':
             post = json.loads(request.body)  # request.POST
             email = post['email']
-            student = Student.objects.get(email__iexact=email)
+            user = User.objects.get(email__iexact=email)
             notifs = Notification.objects.all()
 
             # print(notifs.viewedby_set.all())
 
-            if student:
+            if user.check:
                 for notif in notifs:
 
                     # try:
@@ -217,11 +218,13 @@ def interested(request):
     response['status'] = 0
     if request.method == 'POST':
         post = json.loads(request.body)  # request.POST
-        roll = int(post['roll'])
-        student = Student.objects.get(roll=roll)
+        user = User.objects.get(email__iexact=post['email'])
+        student = Student.objects.get(user=user)
         print (student)
         if student:
             notif = Notification.objects.get(id=int(post['notifid']))
+            interested = [i.name for i in list(notif.interested.all())]
+            print(interested)
             if notif:
                 if not student in notif.interested.all():
                     notif.interested.add(student)
@@ -267,7 +270,7 @@ def timetable(request):
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
-             student = Student.objects.get(email__iexact=email)
+             student = Student.objects.get(email=email)
              dig = hashlib.sha256()
              dig.update((student.password+'8080').encode('ascii'))
              if dig.hexdigest() != post['password']:
