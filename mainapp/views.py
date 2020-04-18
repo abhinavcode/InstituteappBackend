@@ -104,6 +104,7 @@ def feedandclubs(request):
             email = post['email']
             user = User.objects.get(email__iexact=email)
             if not user.check_password(post['password']):
+                    print("wrong pswd")
                     raise Exception
             student= Student.objects.get(user=user)
             notifs = Notification.objects.all()
@@ -144,7 +145,7 @@ def feedandclubs(request):
                     curr['map_location'] = notif.map_location
                     curr['viewedcount'] = notif.viewedby.count()
                     curr['interestedcount'] = notif.interested.count()
-                    if notif.intrested.count() <5:
+                    if notif.interested.count() <5:
                         curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:notif.interested.count()]]
                     else:
                         curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:5]]
@@ -164,8 +165,8 @@ def feedandclubs(request):
             else:
 
                 return JsonResponse(response)
-    except:
-
+    except Exception as e:
+        print(e)
         return JsonResponse(response)
     return JsonResponse(response)
 
