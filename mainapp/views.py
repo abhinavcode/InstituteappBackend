@@ -8,11 +8,11 @@ from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-from base64 import *
+#from base64 import *
 from django.utils import timezone
-import hashlib
+import string
+import random
 import datetime
-import random 
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
@@ -64,28 +64,29 @@ def login(request):
             if not user.check_password(post['password']):
                     raise Exception
             student= Student.objects.get(user=user)
-            student.roll = post['roll']
-            student.name = post['name']
-            student.phone = post['phone']
-            student.department = post['department']
-            student.fcmtoken = post['fcmtoken']
-            student.year = post['year']
+            #student.roll = post['roll']
+            #student.name = post['name']
+            #student.phone = post['phone']
+            #student.department = post['department']
+            #student.fcmtoken = post['fcmtoken']
+            #student.year = post['year']
             response['status'] = 2
         except:
             bugUsername = User.objects.latest('id').id
             user = User.objects.create_user(username=str(bugUsername
                     + 1))
             student = Student(user=user, email=email)
-            student.roll = int(post['roll'])
-            student.name = post['name']
-            student.phone = post['phone']
-            student.department = post['department']
-            student.fcmtoken = post['fcmtoken']
-            student.year = post['year']
-            user.first_name = post['name']
+            #student.roll = int(post['roll'])
+            #student.name = post['name']
+            #student.phone = post['phone']
+            #student.department = post['department']
+            #student.fcmtoken = post['fcmtoken']
+            #student.year = post['year']
+            #user.first_name = post['name']
             password = randomString()
             user.set_password(password)
             user.save()
+            response["password"]=password
             student.save()
             response['status'] = 1
     return JsonResponse(response)
@@ -229,7 +230,7 @@ def interested(request):
         print (student)
         if student:
             notif = Notification.objects.get(id=int(post['notifid']))
-            interested = [i.name for i in list(notif.interested.all())]
+            response["intrested_names"] = [i.name for i in list(notif.interested.all())]
             print(interested)
             if notif:
                 if not student in notif.interested.all():
