@@ -61,9 +61,12 @@ def login(request):
         email = post['email']
         try:
             user = User.objects.get(email__iexact=email)
-            if not user.check_password(post['password']):
-                    raise Exception
             student= Student.objects.get(user=user)
+            password = randomString()
+            user.set_password(password)
+            user.save()
+            response["password"]=password
+            student.save()
             #student.roll = post['roll']
             #student.name = post['name']
             #student.phone = post['phone']
@@ -323,7 +326,7 @@ def notification(request):
                 notif.datetime = datetime.datetime(post['year'],post['month'],post['day'],post['hour'],post['minutes'],0,0,tzinfo = timezone.utc)
                 notif.notification_header = post['header']
                 notif.notification = post['description'] 
-                notif.notification_pic = File(b64decode(post['image']))
+                #notif.notification_pic = File(b64decode(post['image']))
                 notif.save()
            else:
                 response['status']=3
