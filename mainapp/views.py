@@ -326,7 +326,7 @@ def notification(request):
                 notif.datetime = datetime.datetime(post['year'],post['month'],post['day'],post['hour'],post['minutes'],0,0,tzinfo = timezone.utc)
                 notif.notification_header = post['header']
                 notif.notification = post['description'] 
-                #notif.notification_pic = File(b64decode(post['image']))
+                notif.notification_pic = File(b64decode(post['image']))
                 notif.save()
            else:
                 response['status']=3
