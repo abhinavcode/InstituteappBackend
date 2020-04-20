@@ -288,7 +288,60 @@ Empty
     ]
 }
 ```
+___________________
+### timetable 
+```http://iitbhuapp.tk/timetable```
 
+#### Expected POST req
+
+``` 
+{"email":"sample@sample.com","password":"asdadddd"}
+```
+#### Expected POST res
+
+- Response if anything goes wrong
+``` Error in request {"status": 0}```
+``` Invalid credentials {"status": 2}```
+
+- Response if no error
+``` 
+{
+    "status": 1,"image":"/media/mechanical.png"
+}
+```
+___________________
+### notification 
+```http://iitbhuapp.tk/notification```
+
+#### Expected POST req
+
+``` 
+{
+ "email":"sample@sample.com",
+ "password":"asdadddd",
+ "club":"boxing",
+ "year":2020,
+ "month":5,
+ "day":2,
+ "hour":17,
+ "minutes":30,
+ "header":"TECHNEX2020"
+ "description":"the event is postponed"
+ "image":"base64encoded image string"
+ }
+```
+#### Expected POST res
+
+- Response if anything goes wrong
+``` Error in request {"status":1 }```
+``` Invalid credentials {"status": 3}```
+
+- Response if no error
+``` 
+{
+    "status": 1,
+}
+```
 ___________________
 
 ### Contributors
