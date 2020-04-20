@@ -215,7 +215,7 @@ ___________
 - Response if everything is fine
 ``` 
 {    
-	"status": 2,
+	"status": 1,
 	"intrested_names": ["Martin"]
 }
 ```
