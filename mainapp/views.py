@@ -280,11 +280,10 @@ def timetable(request):
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
-             student = Student.objects.get(email=email)
-             dig = hashlib.sha256()
-             dig.update((student.password+'8080').encode('ascii'))
-             if dig.hexdigest() != post['password']:
-                raise Exception
+             user = User.objects.get(email__iexact=email)
+             if not user.check_password(post['password']):
+                    raise Exception
+             student = Student.objects.get(user=user)
              dept = student.department
              timetable = TimeTable.objects.get(department = dept)
              response['image'] = timetable.tableimage.url
