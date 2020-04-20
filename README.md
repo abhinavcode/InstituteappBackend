@@ -7,7 +7,8 @@
 
 #### Expected POST req
 
-``` {"email":"asdjabda@akf.com"}```
+``` {"email":"asdjabda@akf.com",
+	"password": "retrieved from login"}```
 
 #### Expected POST res
 
@@ -42,18 +43,17 @@ _______
 
 #### Expected POST req
 
-``` {"email":"asdjabda@akf.com", "name":"testname" , "roll":12313123, "phone": "1232423535", "department":"Mining", "year":"2019", "fcmtoken":"2131232dasasdasdasdwasd" }```
+``` {"email":"asdjabda@akf.com"}```
 
 #### Expected POST res
 
-- Response if anything goes wrong
-``` {"status": 0}```
-
 - Response if registered 
-``` {"status": 2}```
+``` {"status": 2,
+    "password": "ljdkzenidt"}```
 
 - Response if new reg
-``` {"status": 1}```
+``` {"status": 1,
+    "password": "xevnsemtag"}```
 
 _________
 
@@ -62,7 +62,8 @@ _________
 
 #### Expected POST req
 
-``` {"roll":15075002}```
+``` {"email":"abscvdsfk@itbhu.ac.in",
+	"password": "eiptxcqupu"}```
 
 #### Expected POST res
 
@@ -174,8 +175,8 @@ ___________
 
 ``` 
 {
-	"roll":213,
-	"notifid":1
+	"email":"abdfgbdfg.min18@itbhu.ac.in",
+        "notifid": 23
 }
 ```
 
@@ -185,10 +186,14 @@ ___________
 ``` {"status": 0}```
 
 - Response if everything is fine
-``` {"status": 1}```
+``` {    "status": 2,
+	"intrested_names": ["Martin"]
+	}```
 
 - Response if already intersted
-``` {"status": 2}```
+``` {   "status": 2,
+	"intrested_names": ["Bhoomik Bhamawat", "Martin", "Monu Kumar"]
+	}```
 
 
 ___________
