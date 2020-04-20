@@ -7,8 +7,13 @@
 
 #### Expected POST req
 
-``` {"email":"asdjabda@akf.com",
-	"password": "retrieved from login"}```
+```
+{
+	"email":"asdjabda@akf.com",
+	"password": "retrieved from login"
+}
+```
+
 
 #### Expected POST res
 
@@ -48,12 +53,20 @@ _______
 #### Expected POST res
 
 - Response if registered 
-``` {"status": 2,
-    "password": "ljdkzenidt"}```
+``` 
+{
+	"status": 2,
+    	"password": "ljdkzenidt"
+}
+```
 
 - Response if new reg
-``` {"status": 1,
-    "password": "xevnsemtag"}```
+``` 
+{
+	"status": 1,
+   	"password": "xevnsemtag"
+}
+```
 
 _________
 
@@ -62,8 +75,12 @@ _________
 
 #### Expected POST req
 
-``` {"email":"abscvdsfk@itbhu.ac.in",
-	"password": "eiptxcqupu"}```
+``` 
+{
+	"email":"abscvdsfk@itbhu.ac.in",
+	"password": "eiptxcqupu"
+}
+```
 
 #### Expected POST res
 
@@ -138,31 +155,41 @@ _________
     "notif": [
         {
             "club": "Indian Music Club",
-            "clubimage": "/media/download.png",
+            "clubimage": "/media/IMC.jpg",
             "council": "Cultural Council",
-            "councilimage": "/media/abc.jpeg",
-            "title": "asd",
-            "description": "ad",
-            "datetime": "2019-05-31T10:53:10Z",
-            "location": "ds",
-            "viewedcount": 1,
-            "interestedcount": 1,
-            "interested": 1,
-            "notifid": 1
-        },
-        {
-            "club": "Western Music Club",
-            "council": "Cultural Council",
-            "councilimage": "/media/abc.jpeg",
-            "title": "test1",
-            "description": "test",
-            "image": "/media/back.jpg",
-            "datetime": "2019-05-31T17:55:29Z",
-            "location": "testloc",
+            "councilimage": "/media/00_Cult.jpg",
+            "title": "Indian Music Club, IIT BHU",
+            "description": "The musical journey began with Cultural Council's Fresher's Orientation on 1st and 4th August. The club mesmerised the audience with a number of soulful and rocking performances. The club's musical prowess was staged in front of the fresher's through songs covering a number of genres like Qawwali, Semi-Classical and Rock.",
+            "image": "/media/45235975_2329093817165660_5482301324122914816_o.jpg",
+            "datetime": "2020-07-08T06:00:00Z",
+            "location": "G11",
+            "map_location": "G11",
             "viewedcount": 1,
             "interestedcount": 0,
+            "interested_names": [],
             "interested": 0,
-            "notifid": 2
+            "notifid": 13
+        },
+        {
+            "club": "Robotics Club",
+            "clubimage": "/media/ROBO.jpg",
+            "council": "SNTC",
+            "councilimage": "/media/00_SNTC.jpg",
+            "title": "Selection for Aagman",
+            "description": "RocketLaunch",
+            "image": "/media/robotics_Thv5kj6.jpg",
+            "datetime": "2020-04-30T18:00:00Z",
+            "location": "LT3",
+            "map_location": "SWATANTRATA_BHAVAN",
+            "viewedcount": 1,
+            "interestedcount": 3,
+            "interested_names": [
+                "Martin",
+                "Monu Kumar",
+                "Bhoomik Bhamawat"
+            ],
+            "interested": 1,
+            "notifid": 23
         }
     ]
 }
@@ -186,15 +213,20 @@ ___________
 ``` {"status": 0}```
 
 - Response if everything is fine
-``` {    "status": 2,
+``` 
+{    
+	"status": 2,
 	"intrested_names": ["Martin"]
-	}```
+}
+```
 
 - Response if already intersted
-``` {   "status": 2,
+``` 
+{  
+	"status": 2,
 	"intrested_names": ["Bhoomik Bhamawat", "Martin", "Monu Kumar"]
-	}```
-
+}
+```
 
 ___________
 ### Complain
