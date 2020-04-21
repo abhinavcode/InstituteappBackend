@@ -350,7 +350,7 @@ def notification(request):
                 notif.save()
                 jsondata = {"notification": {"title": post["header"],"body" : post["description"],"location":post['location'],"year":post['year'],"month":post["month"],"hour":post['hour'],"minutes":post['minutes']},"to": "/topics/"+ post["club"].split()[0]}
                 firebase_messaging_req =req.post(url="https://fcm.googleapis.com/fcm/send",data=json.dumps(jsondata),headers = {"Content-Type":"application/json","Authorization":"key=AAAAIJ0yPMw:APA91bFSHkaDO3-s5c6K3U8H0LQFrU7PUz1GIMlaW5lit6dtsh46JUgvJD_cT0l79P_pJQRfeoqs57WjG9DqMdVFpglDjBl9CnZ_lINpmo7AQxol6p7U0BdpPEbh5M2PTpiCiZdx7vOP"})
-                print(firebase_messaging_req.json())
+                print(firebase_messaging_req.status_code)
            else:
                 response['status']=3
                 return JsonResponse(response)
