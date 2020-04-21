@@ -7,9 +7,10 @@ from django.http import Http404
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.files import File
 import json
 import requests as req
-#from base64 import *
+from base64 import *
 from django.utils import timezone
 import string
 import random
@@ -154,7 +155,7 @@ def feedandclubs(request):
                         curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:notif.interested.count()]]
                     else:
                         curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:5]]
-                    
+
                     if student in notif.interested.all():
                         curr['interested'] = 1
                     else:
@@ -190,7 +191,7 @@ def postcomplain(request):
             student= Student.objects.get(user=user)
         except:
             return JsonResponse(response)
-        student= Student.objects.get(user=user)    
+        student= Student.objects.get(user=user)
         if student:
             complainheader = post['header']
             complaintype = post['type']
@@ -277,7 +278,7 @@ def timetable(request):
     response = {}
     response['status'] = 0
 
-    if request.method == 'POST':            
+    if request.method == 'POST':
         post = json.loads(request.body)  # request.POST
         email = post['email']
         try:
@@ -291,9 +292,9 @@ def timetable(request):
              response['status'] = 1
         except:
             response['status'] =2
-            
+
         return JsonResponse(response)
-    
+
 @csrf_exempt
 def importantcontacts(request):
     response = {}
@@ -308,7 +309,25 @@ def importantcontacts(request):
                 "role" : contact.role_type,
             } for contact in contacts ]
         response['status'] = 1
-    return JsonResponse(response) 
+    return JsonResponse(response)
+
+@csrf_exempt
+def pors(request):
+    response = {}
+    response['status'] = 0
+    if request.method == 'POST':
+         post = json.loads(request.body)  # request.POST
+         pors = POR.objects.all()
+         response['data'] = [
+             {
+                 "name" : por.name,
+                 "email" : por.email,
+                 "council" : por.councilname,
+                 "position" : por.postion,
+             } for por in pors ]
+         response['status'] = 1
+    return JsonResponse(response)
+
 
 @csrf_exempt
 def notification(request):
@@ -320,26 +339,24 @@ def notification(request):
         try:
            user = User.objects.get(email__iexact=post['email'])
            if user.check_password(post['password']):
-                por = POR.objects.get(user=user)
-                club =  Club.objects.get(name = post['club'],councilname=por.councilname)
+                club =  Club.objects.get(name = post['club'])
                 notif = Notification.objects.create(clubname = club)
                 notif.datetime = datetime.datetime(post['year'],post['month'],post['day'],post['hour'],post['minutes'],0,0,tzinfo = timezone.utc)
                 notif.notification_header = post['header']
-                notif.notification = post['description'] 
+                notif.notification = post['description']
+                notif.location = post['location']
+                notif.map_location = post['map_location']
                 notif.notification_pic = File(b64decode(post['image'].encode("utf8")))
                 notif.save()
-                jsondata = {"notification": {"title": post["header"],"body" : post["description"],},"to": "/topics/"+ post["club"].split[0]}
-                firebase_messaging_req =.post(url="https://fcm.googleapis.com/fcm/send",data=json.dumps(jsondata),headers = {"Content-Type":"application/json","Authorization":"key=AAAAIJ0yPMw:APA91bFSHkaDO3-s5c6K3U8H0LQFrU7PUz1GIMlaW5lit6dtsh46JUgvJD_cT0l79P_pJQRfeoqs57WjG9DqMdVFpglDjBl9CnZ_lINpmo7AQxol6p7U0BdpPEbh5M2PTpiCiZdx7vOP"})
-                if firebase_messaging_req.status_code() != 200 :
-                    raise Exception
-                
+                jsondata = {"notification": {"title": post["header"],"body" : post["description"],"location":post['location'],"year":post['year'],"month":post["month"],"hour":post['hour'],"minutes":post['minutes']},"to": "/topics/"+ post["club"].split()[0]}
+                firebase_messaging_req =req.post(url="https://fcm.googleapis.com/fcm/send",data=json.dumps(jsondata),headers = {"Content-Type":"application/json","Authorization":"key=AAAAIJ0yPMw:APA91bFSHkaDO3-s5c6K3U8H0LQFrU7PUz1GIMlaW5lit6dtsh46JUgvJD_cT0l79P_pJQRfeoqs57WjG9DqMdVFpglDjBl9CnZ_lINpmo7AQxol6p7U0BdpPEbh5M2PTpiCiZdx7vOP"})
+                print(firebase_messaging_req.json())
            else:
                 response['status']=3
                 return JsonResponse(response)
-                
+
         except Exception as e:
             print("error:",e)
             return JsonResponse(response)
         response['status'] = 1
     return JsonResponse(response)
-    
