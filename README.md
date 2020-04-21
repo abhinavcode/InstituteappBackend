@@ -317,17 +317,14 @@ ___________________
 
 ``` 
 {
- "email":"sample@sample.com",
- "password":"asdadddd",
- "club":"boxing",
- "year":2020,
- "month":5,
- "day":2,
- "hour":17,
- "minutes":30,
- "header":"TECHNEX2020"
- "description":"the event is postponed"
- "image":"base64encoded image string"
+ {'email': 'ksnabielmartin.mec18@gmail.com', 
+ 'password': 'fmacjdorpn', 
+ 'club': 'DFZ', 'year': 2020, 
+ 'month': 5, 'day': 2, 
+ 'hour': 17, 'minutes': 30, 
+ 'header': 'TECHNEX2020', 
+ 'description': 'the event is postponed', 
+ 'image': 'base64encoded image string'
  }
 ```
 #### Expected POST res
