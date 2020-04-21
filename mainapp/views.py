@@ -320,8 +320,7 @@ def notification(request):
         try:
            user = User.objects.get(email__iexact=post['email'])
            if user.check_password(post['password']):
-                por = POR.objects.get(user=user)
-                club =  Club.objects.get(name = post['club'],councilname=por.councilname)
+                club =  Club.objects.get(name = post['club'])
                 notif = Notification.objects.create(clubname = club)
                 notif.datetime = datetime.datetime(post['year'],post['month'],post['day'],post['hour'],post['minutes'],0,0,tzinfo = timezone.utc)
                 notif.notification_header = post['header']
@@ -330,8 +329,6 @@ def notification(request):
                 notif.save()
                 jsondata = {"notification": {"title": post["header"],"body" : post["description"],},"to": "/topics/"+ post["club"].split[0]}
                 firebase_messaging_req =req.post(url="https://fcm.googleapis.com/fcm/send",data=json.dumps(jsondata),headers = {"Content-Type":"application/json","Authorization":"key=AAAAIJ0yPMw:APA91bFSHkaDO3-s5c6K3U8H0LQFrU7PUz1GIMlaW5lit6dtsh46JUgvJD_cT0l79P_pJQRfeoqs57WjG9DqMdVFpglDjBl9CnZ_lINpmo7AQxol6p7U0BdpPEbh5M2PTpiCiZdx7vOP"})
-                if firebase_messaging_req.status_code() != 200 :
-                    raise Exception
                 
            else:
                 response['status']=3
