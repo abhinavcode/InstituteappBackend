@@ -289,7 +289,7 @@ Empty
 }
 ```
 ___________________
-### important contacts
+### position of responsibility
 ```http://iitbhuapp.tk/pors```
 
 #### Expected POST req
