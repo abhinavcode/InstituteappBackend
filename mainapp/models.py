@@ -44,8 +44,12 @@ class CouncilandCell(models.Model):
 class POR(models.Model):
 	name = models.CharField(max_length=100, blank=False,default="")
 	email = models.CharField(max_length=100, blank=False,default="")
+	phone = models.CharField(max_length=100, blank=False,default="")
 	councilname = models.CharField(max_length=100, blank=False,default="")
 	postion = models.CharField(max_length=100, blank=False,default="")
+	image = models.ImageField(null=True,blank=False)
+	dept = models.CharField(max_length=100, blank=False,default="")
+	responsibility = models.CharField(max_length=100, blank=False,default="")
 	def __str__(self):
 		return self.name
 
