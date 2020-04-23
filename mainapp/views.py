@@ -287,6 +287,9 @@ def timetable(request):
 
     if request.method == 'POST':
         try:
+            user = User.objects.get(email__iexact=email)
+            if not user.check_password(post['password']):
+                raise Exception
             timetables = TimeTable.objects.all()
             response['data'] = [
                 {
