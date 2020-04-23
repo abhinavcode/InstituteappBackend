@@ -309,17 +309,26 @@ Empty
     "status": 1,
     "data": [
         {
-            "name": "Yogesh",
-            "email": "sample@sample.com",
-            "position": "genesec",
-            "council" : "sports",
-        },
-        {
-            "name": "xyz",
-            "email": "xyz@xyz.com",
-            "position": "join sec",
-            "council" : "technex",
-        }
+                "name": "mayankbansal",
+                "email": "gensec@itbhu.ac.in",
+                "council": "business",
+                "position": "general secretary",
+                "phone": 9999999999,
+                "department": "electrical",
+                "responsibility": "heading business",
+                "image": "/media/moti.jpeg"
+            },
+    {
+                "name": "ravichandra",
+                "email": "sportssec@itbhu.ac.in",
+                "council": "sports",
+                "position": "joint secretarty",
+                "phone": 9999999994,
+                "department": "Chemical",
+                "responsibility": "maintanence of gymkhana",
+                "image": "/media/moti.jpeg"
+		}
+
     ]
 }
 ```
@@ -341,7 +350,24 @@ ___________________
 - Response if no error
 ``` 
 {
-    "status": 1,"image":"/media/mechanical.png"
+    "status": 1,
+    "data": [
+        {
+            "department": "Aerospace Engineering",
+            "year": 1,
+            "image": "/media/moti.jpeg"
+        },
+        {
+            "department": "Electrical",
+            "year": 2,
+            "image": "/media/jain.jpg"
+        },
+        {
+            "department": "Ceramics",
+            "year": 3,
+            "image": "/media/moti_cCsoOkq.jpeg"
+        }
+    ]
 }
 ```
 ___________________
@@ -352,7 +378,7 @@ ___________________
 
 ``` 
 {
- "email":"sample@sample.com",
+ "email":"ksnabielmartin.mec18@itbhu.ac.in",
  "password":"asdadddd",
  "club":"boxing",
  "year":2020,
@@ -360,11 +386,11 @@ ___________________
  "day":2,
  "hour":17,
  "minutes":30,
- "location":"gymkhana"
- "map_location":"G11"
- "header":"TECHNEX2020"
- "description":"the event is postponed"
- "image":"base64encoded image string"
+ "location":"gymkhana",
+ "map_location":"G11",
+ "header":"TECHNEX2020",
+ "description":"the event is postponed",
+ "image":"base64encoded image string",
  }
 ```
 #### Expected POST res
