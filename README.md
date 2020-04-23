@@ -289,6 +289,41 @@ Empty
 }
 ```
 ___________________
+### position of responsibility
+```http://iitbhuapp.tk/pors```
+
+#### Expected POST req
+
+Empty
+``` 
+{}
+```
+#### Expected POST res
+
+- Response if anything goes wrong
+``` {"status": 0}```
+
+- Response if no error
+``` 
+{
+    "status": 1,
+    "data": [
+        {
+            "name": "Yogesh",
+            "email": "sample@sample.com",
+            "position": "genesec",
+            "council" : "sports",
+        },
+        {
+            "name": "xyz",
+            "email": "xyz@xyz.com",
+            "position": "join sec",
+            "council" : "technex",
+        }
+    ]
+}
+```
+___________________
 ### timetable 
 ```http://iitbhuapp.tk/timetable```
 
@@ -317,14 +352,19 @@ ___________________
 
 ``` 
 {
- {'email': 'ksnabielmartin.mec18@gmail.com', 
- 'password': 'fmacjdorpn', 
- 'club': 'DFZ', 'year': 2020, 
- 'month': 5, 'day': 2, 
- 'hour': 17, 'minutes': 30, 
- 'header': 'TECHNEX2020', 
- 'description': 'the event is postponed', 
- 'image': 'base64encoded image string'
+ "email":"sample@sample.com",
+ "password":"asdadddd",
+ "club":"boxing",
+ "year":2020,
+ "month":5,
+ "day":2,
+ "hour":17,
+ "minutes":30,
+ "location":"gymkhana"
+ "map_location":"G11"
+ "header":"TECHNEX2020"
+ "description":"the event is postponed"
+ "image":"base64encoded image string"
  }
 ```
 #### Expected POST res

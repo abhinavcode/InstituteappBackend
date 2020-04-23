@@ -41,7 +41,6 @@ class CouncilandCell(models.Model):
 	def __str__(self):
 		return self.name
 
-
 class POR(models.Model):
 	name = models.CharField(max_length=100, blank=False,default="")
 	email = models.CharField(max_length=100, blank=False,default="")
