@@ -396,8 +396,8 @@ ___________________
 #### Expected POST res
 
 - Response if anything goes wrong
-``` Error in request {"status":1 }```
-``` Invalid credentials {"status": 3}```
+``` Error in request {"status":0 }
+    Invalid credentials {"status": 3}```
 
 - Response if no error
 ``` 
