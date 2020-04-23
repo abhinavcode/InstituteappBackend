@@ -287,7 +287,8 @@ def timetable(request):
 
     if request.method == 'POST':
         try:
-            user = User.objects.get(email__iexact=email)
+            post = json.loads(request.body) 
+            user = User.objects.get(email__iexact=post['email'])
             if not user.check_password(post['password']):
                 raise Exception
             timetables = TimeTable.objects.all()
@@ -298,7 +299,7 @@ def timetable(request):
                     "image": timetable.tableimage.url
                 } for timetable in timetables]
             response['status'] = 1
-        except BaseException:
+        except Exception:
             response['status'] = 2
 
         return JsonResponse(response)
