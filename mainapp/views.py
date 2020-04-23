@@ -376,7 +376,6 @@ def notification(request):
 
         except Exception as e:
             print("error:", e)
-            traceback.print_tb(e.__traceback__)
             return JsonResponse(response)
         response['status'] = 1
     return JsonResponse(response)
