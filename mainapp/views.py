@@ -16,6 +16,7 @@ import string
 import random
 import datetime
 
+
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
 
@@ -35,8 +36,8 @@ def checkregister(request):
         try:
             user = User.objects.get(email__iexact=email)
             if not user.check_password(post['password']):
-                    raise Exception
-            student= Student.objects.get(user=user)
+                raise Exception
+            student = Student.objects.get(user=user)
             response['name'] = student.name
             response['roll'] = student.roll
             response['phone'] = student.phone
@@ -49,7 +50,7 @@ def checkregister(request):
             response['bloodGroup'] = student.bloodGroup
             response['dob'] = student.dob
             response['status'] = 1  # registered
-        except:
+        except BaseException:
             response['status'] = 2  # not registered
     return JsonResponse(response)
 
@@ -63,11 +64,11 @@ def login(request):
         email = post['email']
         try:
             user = User.objects.get(email__iexact=email)
-            student= Student.objects.get(user=user)
+            student = Student.objects.get(user=user)
             password = randomString()
             user.set_password(password)
             user.save()
-            response["password"]=password
+            response["password"] = password
             student.save()
             #student.roll = post['roll']
             #student.name = post['name']
@@ -76,10 +77,10 @@ def login(request):
             #student.fcmtoken = post['fcmtoken']
             #student.year = post['year']
             response['status'] = 2
-        except:
+        except BaseException:
             bugUsername = User.objects.latest('id').id
             user = User.objects.create_user(username=str(bugUsername
-                    + 1))
+                                                         + 1))
             student = Student(user=user, email=email)
             #student.roll = int(post['roll'])
             #student.name = post['name']
@@ -91,7 +92,7 @@ def login(request):
             password = randomString()
             user.set_password(password)
             user.save()
-            response["password"]=password
+            response["password"] = password
             student.save()
             response['status'] = 1
     return JsonResponse(response)
@@ -110,9 +111,9 @@ def feedandclubs(request):
             email = post['email']
             user = User.objects.get(email__iexact=email)
             if not user.check_password(post['password']):
-                    print("wrong pswd")
-                    raise Exception
-            student= Student.objects.get(user=user)
+                print("wrong pswd")
+                raise Exception
+            student = Student.objects.get(user=user)
             notifs = Notification.objects.all()
 
             # print(notifs.viewedby_set.all())
@@ -122,11 +123,11 @@ def feedandclubs(request):
 
                     # try:
 
-                    if not student in notif.viewedby.all():
+                    if student not in notif.viewedby.all():
                         notif.viewedby.add(student)
                         notif.save()
 
-                            # print("2132133333333333333333333333333333333333333333333333")
+                        # print("2132133333333333333333333333333333333333333333333333")
                     # except:
                     #         notif.viewedby.add(student)
                     #         notif.save()
@@ -151,10 +152,13 @@ def feedandclubs(request):
                     curr['map_location'] = notif.map_location
                     curr['viewedcount'] = notif.viewedby.count()
                     curr['interestedcount'] = notif.interested.count()
-                    if notif.interested.count() <5:
-                        curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:notif.interested.count()]]
+                    if notif.interested.count() < 5:
+                        curr["interested_names"] = [
+                            i.name for i in notif.interested.order_by('?')[
+                                :notif.interested.count()]]
                     else:
-                        curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[:5]]
+                        curr["interested_names"] = [i.name for i in notif.interested.order_by('?')[
+                            :5]]
 
                     if student in notif.interested.all():
                         curr['interested'] = 1
@@ -182,16 +186,16 @@ def postcomplain(request):
     response = {}
     response['status'] = 0
     if request.method == 'POST':
-        print (request.body)
+        print(request.body)
         post = json.loads(request.body)  # request.POST
         try:
             user = User.objects.get(email__iexact=email)
             if not user.check_password(post['password']):
-                    raise Exception
-            student= Student.objects.get(user=user)
-        except:
+                raise Exception
+            student = Student.objects.get(user=user)
+        except BaseException:
             return JsonResponse(response)
-        student= Student.objects.get(user=user)
+        student = Student.objects.get(user=user)
         if student:
             complainheader = post['header']
             complaintype = post['type']
@@ -232,13 +236,14 @@ def interested(request):
         post = json.loads(request.body)  # request.POST
         user = User.objects.get(email__iexact=post['email'])
         student = Student.objects.get(user=user)
-        print (student)
+        print(student)
         if student:
             notif = Notification.objects.get(id=int(post['notifid']))
-            response["intrested_names"] = [i.name for i in list(notif.interested.all())]
+            response["intrested_names"] = [
+                i.name for i in list(notif.interested.all())]
             print(interested)
             if notif:
-                if not student in notif.interested.all():
+                if student not in notif.interested.all():
                     notif.interested.add(student)
                     notif.save()
                     response['status'] = 1
@@ -273,27 +278,28 @@ def clubsandcouncils():
             cou['clubs'].append(club)
             response['councils'].append(cou)
     return response
+
+
 @csrf_exempt
 def timetable(request):
     response = {}
     response['status'] = 0
 
     if request.method == 'POST':
-        post = json.loads(request.body)  # request.POST
-        email = post['email']
         try:
-             user = User.objects.get(email__iexact=email)
-             if not user.check_password(post['password']):
-                    raise Exception
-             student = Student.objects.get(user=user)
-             dept = student.department
-             timetable = TimeTable.objects.get(department = dept)
-             response['image'] = timetable.tableimage.url
-             response['status'] = 1
-        except:
-            response['status'] =2
+            timetables = TimeTable.objects.all()
+            response['data'] = [
+                {
+                    "department": timetable.department,
+                    "year": timetable.year,
+                    "image": timetable.tableimage.url
+                } for timetable in timetables]
+            response['status'] = 1
+        except BaseException:
+            response['status'] = 2
 
         return JsonResponse(response)
+
 
 @csrf_exempt
 def importantcontacts(request):
@@ -303,33 +309,34 @@ def importantcontacts(request):
         contacts = ImpContact.objects.all()
         response['data'] = [
             {
-                "name" : contact.name,
-                "email" : contact.email,
-                "phone" : contact.phone,
-                "role" : contact.role_type,
-            } for contact in contacts ]
+                "name": contact.name,
+                "email": contact.email,
+                "phone": contact.phone,
+                "role": contact.role_type,
+            } for contact in contacts]
         response['status'] = 1
     return JsonResponse(response)
+
 
 @csrf_exempt
 def pors(request):
     response = {}
     response['status'] = 0
     if request.method == 'POST':
-         post = json.loads(request.body)  # request.POST
-         pors = POR.objects.all()
-         response['data'] = [
-             {
-                 "name" : por.name,
-                 "email" : por.email,
-                 "council" : por.councilname,
-                 "position" : por.postion,
-                 "phone":por.phone,
-                 "department":por.dept,
-                 "responsibility":por.responsibility,
-                 "image":por.image.url
-             } for por in pors ]
-         response['status'] = 1
+        post = json.loads(request.body)  # request.POST
+        pors = POR.objects.all()
+        response['data'] = [
+            {
+                "name": por.name,
+                "email": por.email,
+                "council": por.councilname,
+                "position": por.postion,
+                "phone": por.phone,
+                "department": por.dept,
+                "responsibility": por.responsibility,
+                "image": por.image.url
+            } for por in pors]
+        response['status'] = 1
     return JsonResponse(response)
 
 
@@ -339,28 +346,33 @@ def notification(request):
     response['status'] = 0
     if request.method == 'POST':
         post = json.loads(request.body)
-        print(post)
         try:
-           user = User.objects.get(email__iexact=post['email'])
-           if user.check_password(post['password']):
-                club =  Club.objects.get(name = post['club'])
-                notif = Notification.objects.create(clubname = club)
-                notif.datetime = datetime.datetime(post['year'],post['month'],post['day'],post['hour'],post['minutes'],0,0,tzinfo = timezone.utc)
-                notif.notification_header = post['header']
-                notif.notification = post['description']
-                notif.location = post['location']
-                notif.map_location = post['map_location']
-                notif.notification_pic = File(b64decode(post['image'].encode("utf8")))
-                notif.save()
-                jsondata = {"notification": {"title": post["header"],"body" : post["description"],"location":post['location'],"year":post['year'],"month":post["month"],"hour":post['hour'],"minutes":post['minutes']},"to": "/topics/"+ post["club"].split()[0]}
-                firebase_messaging_req =req.post(url="https://fcm.googleapis.com/fcm/send",data=json.dumps(jsondata),headers = {"Content-Type":"application/json","Authorization":"key=AAAAIJ0yPMw:APA91bFSHkaDO3-s5c6K3U8H0LQFrU7PUz1GIMlaW5lit6dtsh46JUgvJD_cT0l79P_pJQRfeoqs57WjG9DqMdVFpglDjBl9CnZ_lINpmo7AQxol6p7U0BdpPEbh5M2PTpiCiZdx7vOP"})
-                print(firebase_messaging_req.json())
-           else:
-                response['status']=3
+            user = User.objects.get(email__iexact=post['email'])
+            if user.check_password(post['password']):
+                club = Club.objects.get(name=post['club'])
+                notif = Notification.objects.create(
+                    clubname=club,
+                    notification_header=post['header'],
+                    notification=post['description'],
+                    datetime=datetime.datetime(
+                        post['year'],
+                        post['month'],
+                        post['day'],
+                        post['hour'],
+                        post['minutes'],
+                        0,
+                        0,
+                        tzinfo=timezone.utc),
+                    location=post['location'],
+                    map_location=post['map_location'],
+                )
+            else:
+                response['status'] = 3
                 return JsonResponse(response)
 
         except Exception as e:
-            print("error:",e)
+            print("error:", e)
+            traceback.print_tb(e.__traceback__)
             return JsonResponse(response)
         response['status'] = 1
     return JsonResponse(response)
