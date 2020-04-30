@@ -227,7 +227,6 @@ def postcomplain(request):
 
     return JsonResponse(response)
 
-
 @csrf_exempt
 def interested(request):
     response = {}
@@ -237,7 +236,7 @@ def interested(request):
         user = User.objects.get(email__iexact=post['email'])
         student = Student.objects.get(user=user)
         print(student)
-        if student:
+        if user.check_password(post['password']) & post['switch']:
             notif = Notification.objects.get(id=int(post['notifid']))
             response["intrested_names"] = [
                 i.name for i in list(notif.interested.all())]
@@ -251,6 +250,11 @@ def interested(request):
                     response['status'] = 2
 
                 return JsonResponse(response)
+        elif not (user.check_password(post['password']) & post['switch']):
+             notif = Notification.objects.get(id=int(post['notifid']))
+             notif.interested.remove(student)
+             response['status'] = 3
+             return JsonResponse(response)
 
     return JsonResponse(response)
 
