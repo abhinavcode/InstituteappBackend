@@ -240,11 +240,10 @@ def interested(request):
             notif = Notification.objects.get(id=int(post['notifid']))
             response["intrested_names"] = [
                 i.name for i in list(notif.interested.all())]
-            print(interested)
             if notif:
                 if student not in notif.interested.all():
                     notif.interested.add(student)
-                    notif.save()
+                    super(type(notif),notif).save()
                     response['status'] = 1
                 else:
                     response['status'] = 2
@@ -257,7 +256,6 @@ def interested(request):
              return JsonResponse(response)
 
     return JsonResponse(response)
-
 
 def clubsandcouncils():
     response = {}
