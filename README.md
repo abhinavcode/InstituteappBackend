@@ -201,9 +201,20 @@ ___________
 #### Expected POST req
 
 ``` 
+#if interested
 {
-	"email":"abdfgbdfg.min18@itbhu.ac.in",
-        "notifid": 23
+"email":"ksnabielmartin.mec18@itbhu.ac.in",
+"password": "lhgrcyzwed",
+ "switch":1,
+ "notifid":10
+}
+
+#if uninterested
+{
+"email":"ksnabielmartin.mec18@itbhu.ac.in",
+"password": "lhgrcyzwed",
+ "switch":0,
+ "notifid":10
 }
 ```
 
@@ -214,9 +225,11 @@ ___________
 
 - Response if everything is fine
 ``` 
-{    
-	"status": 1,
-	"intrested_names": ["Martin"]
+{
+    "status": 1,
+    "intrested_names": [
+        "Tanmay Mishra"
+    ]
 }
 ```
 
@@ -227,6 +240,11 @@ ___________
 	"intrested_names": ["Bhoomik Bhamawat", "Martin", "Monu Kumar"]
 }
 ```
+- Response if uninterested
+``` 
+{  
+	"status": 3
+}
 
 ___________
 ### Complain
