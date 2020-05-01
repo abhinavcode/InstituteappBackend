@@ -252,6 +252,9 @@ def interested(request):
         elif not (user.check_password(post['password']) & post['switch']):
              notif = Notification.objects.get(id=int(post['notifid']))
              notif.interested.remove(student)
+             super(type(notif),notif).save()
+             response["intrested_names"] = [
+                i.name for i in list(notif.interested.all())]
              response['status'] = 3
              return JsonResponse(response)
 
