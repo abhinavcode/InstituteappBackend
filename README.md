@@ -242,8 +242,11 @@ ___________
 ```
 - Response if uninterested
 ``` 
-{  
-	"status": 3
+{
+    "status": 3,
+    "intrested_names": [
+        "Tanmay Mishra"
+    ]
 }
 ``` 
 ___________
