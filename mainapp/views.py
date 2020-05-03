@@ -357,8 +357,6 @@ def notification(request):
         try:
             file = request.FILES["notification_image"]
             post = request.POST
-            print(file)
-            print(post["email"])
             user = User.objects.get(email__iexact=post['email'])
             if user.check_password(post['password']):
                 club = Club.objects.get(name=post['club'])
