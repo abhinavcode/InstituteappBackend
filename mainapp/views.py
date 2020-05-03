@@ -354,8 +354,11 @@ def notification(request):
     response = {}
     response['status'] = 0
     if request.method == 'POST':
-        post = json.loads(request.body)
         try:
+            file = request.FILES["notification_image"]
+            post = request.POST
+            print(file)
+            print(post["email"])
             user = User.objects.get(email__iexact=post['email'])
             if user.check_password(post['password']):
                 club = Club.objects.get(name=post['club'])
@@ -364,16 +367,17 @@ def notification(request):
                     notification_header=post['header'],
                     notification=post['description'],
                     datetime=datetime.datetime(
-                        post['year'],
-                        post['month'],
-                        post['day'],
-                        post['hour'],
-                        post['minutes'],
+                        int(post['year']),
+                        int(post['month']),
+                        int(post['day']),
+                        int(post['hour']),
+                        int(post['minutes']),
                         0,
                         0,
                         tzinfo=timezone.utc),
                     location=post['location'],
                     map_location=post['map_location'],
+                    notification_pic = file
                 )
             else:
                 response['status'] = 3
@@ -384,3 +388,5 @@ def notification(request):
             return JsonResponse(response)
         response['status'] = 1
     return JsonResponse(response)
+
+
